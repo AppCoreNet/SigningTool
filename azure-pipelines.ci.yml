@@ -4,7 +4,13 @@ variables:
   configuration: Debug
 
 trigger:
-- dev
+  branches:
+    include:
+    - dev
+    - master
+    - releases/*
+    - hotfixes/*
+    - support/v*
 
 jobs:
 - template: build/shared/azure-pipelines/jobs.yml
