@@ -1,11 +1,13 @@
-AppCore .NET <Project>
-----------------------
+AppCore .NET Signing Tool
+-------------------------
 
 <Build status>
 
 <Project description>
 
 ## Packages
+
+Latest development packages can be found on [MyGet](https://www.myget.org/gallery/appcorenet).
 
 Package                                           | Description
 --------------------------------------------------|------------------------------------------------------------------------------------------------------

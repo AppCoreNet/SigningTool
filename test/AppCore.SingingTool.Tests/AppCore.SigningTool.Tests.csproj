@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
+    <RootNamespace>AppCore.SigningTool</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AppCore.SigningTool\AppCore.SigningTool.csproj" />
+  </ItemGroup>
+
+</Project>

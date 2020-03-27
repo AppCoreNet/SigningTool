@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>dotnet-signtool</ToolCommandName>
+    <Description>.NET Core command line tool for strong naming.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.6.0" />
+    <PackageReference Include="dnlib" Version="3.3.1" />
+  </ItemGroup>
+
+</Project>

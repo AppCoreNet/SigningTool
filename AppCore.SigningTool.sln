@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppCore.SigningTool", "src\AppCore.SigningTool\AppCore.SigningTool.csproj", "{73DE9DAD-B581-4810-A35E-8351F6747845}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppCore.SigningTool.Tests", "test\AppCore.SingingTool.Tests\AppCore.SigningTool.Tests.csproj", "{DE62F6BD-5942-4862-83DF-79C1EE50A940}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73DE9DAD-B581-4810-A35E-8351F6747845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73DE9DAD-B581-4810-A35E-8351F6747845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73DE9DAD-B581-4810-A35E-8351F6747845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73DE9DAD-B581-4810-A35E-8351F6747845}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE62F6BD-5942-4862-83DF-79C1EE50A940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE62F6BD-5942-4862-83DF-79C1EE50A940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE62F6BD-5942-4862-83DF-79C1EE50A940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE62F6BD-5942-4862-83DF-79C1EE50A940}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9B259C92-4976-41D0-9486-50E79F770D6E}
+	EndGlobalSection
+EndGlobal
