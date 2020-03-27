@@ -1,0 +1,16 @@
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
+variables:
+  configuration: Release
+
+pr: none
+
+trigger:
+  tags:
+    include:
+    - v*
+
+jobs:
+- template: build/shared/azure-pipelines/jobs.yml
+  parameters:
+    configuration: $(configuration)

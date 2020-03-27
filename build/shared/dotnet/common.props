@@ -1,0 +1,4 @@
+<Project>
+  <Import Project="../../version.generated.props" Condition=" Exists('../../version.generated.props') " />
+  <Import Project="./local-packages.props" />
+</Project>
