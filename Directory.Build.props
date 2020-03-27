@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Authors>AppCore .NET Contributors</Authors>
     <Company>The AppCore .NET project</Company>
-    <Product>AppCore .NET Signing Tool</Product>
+    <Product>AppCore .NET Assembly Signing Tool</Product>
     <Copyright>Copyright (c) 2020 the AppCore .NET project</Copyright>
     <Version>1.0.0</Version>
     <PackageLicenseUrl>https://github.com/AppCoreNet/SingingTool/blob/dev/LICENSE</PackageLicenseUrl>

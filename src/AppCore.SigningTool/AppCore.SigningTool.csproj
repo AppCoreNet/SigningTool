@@ -5,7 +5,7 @@
     <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>dotnet-signtool</ToolCommandName>
-    <Description>.NET Core command line tool for strong naming.</Description>
+    <Description>.NET Core command line tool for assembly signing.</Description>
   </PropertyGroup>
 
   <ItemGroup>
