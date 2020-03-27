@@ -1,0 +1,14 @@
+steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET Core Runtime 2.1'
+  inputs:
+    version: '2.1.x'
+    packageType: runtime
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK 3.1'
+  inputs:
+    version: '3.1.x'
+- task: NuGetToolInstaller@1
+  displayName: 'Install NuGet 5.4'
+  inputs:
+    versionSpec: '5.4.x'
