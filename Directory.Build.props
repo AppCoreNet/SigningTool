@@ -1,0 +1,25 @@
+<Project>
+  <PropertyGroup>
+    <Authors>AppCore .NET Contributors</Authors>
+    <Company>The AppCore .NET project</Company>
+    <Product>AppCore .NET Project Template</Product>
+    <Copyright>Copyright (c) 2018-2020 the AppCore project</Copyright>
+    <Version>1.0.0</Version>
+    <PackageLicenseUrl>https://github.com/AppCoreNet/Template/blob/dev/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/AppCoreNet/Template</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <LangVersion>latest</LangVersion>
+    <NoWarn>$(NoWarn);NU5105</NoWarn>
+    <!--
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode Condition="'$(CI)' == 'true'">true</RestoreLockedMode>
+    -->
+  </PropertyGroup>
+
+  <Import Project="./build/shared/dotnet/common.props" />
+  <Import Project="./build/shared/dotnet/netfx.props" />
+  
+  <Import Project="./build/sources.props" />
+  <Import Project="./build/dependency-versions.props" />
+
+</Project>

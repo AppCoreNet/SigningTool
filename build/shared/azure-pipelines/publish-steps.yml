@@ -1,0 +1,22 @@
+parameters:
+  configuration: 'Debug'
+  
+steps:
+- pwsh: ./build.ps1 --target=Publish --configuration='${{ parameters.configuration }}' --artifactsDir='$(Build.ArtifactStagingDirectory)'
+  displayName: Publish
+- task: NuGetCommand@2
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+  displayName: Push Packages (Testing)
+  inputs:
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: MyGet Testing
+    packagesToPush: $(Build.ArtifactStagingDirectory)/packages/**.nupkg
+- task: NuGetCommand@2
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+  displayName: Push Packages (CI)
+  inputs:
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: MyGet
+    packagesToPush: $(Build.ArtifactStagingDirectory)/packages/**.nupkg

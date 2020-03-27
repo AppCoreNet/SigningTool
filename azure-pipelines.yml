@@ -1,0 +1,12 @@
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
+variables:
+  configuration: Debug
+
+trigger:
+- dev
+
+jobs:
+- template: build/shared/azure-pipelines/jobs.yml
+  parameters:
+    configuration: $(configuration)

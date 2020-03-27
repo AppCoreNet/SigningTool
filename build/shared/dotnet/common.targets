@@ -1,0 +1,3 @@
+<Project>
+  <Import Project="./local-packages.targets" />
+</Project>
