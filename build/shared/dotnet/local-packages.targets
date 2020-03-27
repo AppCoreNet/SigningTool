@@ -1,9 +1,0 @@
-<Project>
-  <Target Name="CopyPackage" AfterTargets="Pack">
-    <Copy
-      Condition=" '$(IsPackable)' == 'true' And Exists($(LocalPackageDirectory)) "
-      SourceFiles="$(PackageOutputPath)/$(PackageId).$(PackageVersion).nupkg"
-      DestinationFolder="$(LocalPackageDirectory)"
-      />
-  </Target>  
-</Project>
