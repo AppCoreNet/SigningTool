@@ -7,19 +7,18 @@ namespace AppCore.SigningTool
 {
     /// <summary>
     /// Exit codes.
-    /// https://www.febooti.com/products/automation-workshop/online-help/actions/run-dos-cmd-command/exit-codes/
     /// </summary>
     internal static class ExitCodes
     {
         public const int Success = 0;
 
-        public const int FileAreadyExists = -1;
+        public const int FileAreadyExists = 1;
 
         public const int FileNotFound = 2;
 
-        public const int InvalidKey = -3;
+        public const int InvalidKey = 3;
 
-        public const int InvalidAssembly = -4;
+        public const int InvalidAssembly = 4;
 
         public const int Unknown = -1;
 
@@ -27,9 +26,6 @@ namespace AppCore.SigningTool
         {
             switch (error)
             {
-                case BadImageFormatException _:
-                    return InvalidAssembly;
-
                 case FileAreadyExistsException _:
                     return FileAreadyExists;
 
@@ -38,6 +34,9 @@ namespace AppCore.SigningTool
 
                 case InvalidKeyException _:
                     return InvalidKey;
+
+                case BadImageFormatException _:
+                    return InvalidAssembly;
 
                 default:
                     return Unknown;
