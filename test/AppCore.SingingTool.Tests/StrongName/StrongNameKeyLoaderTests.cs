@@ -67,7 +67,7 @@ namespace AppCore.SigningTool.StrongName
             Action method = () => loader.LoadKey(keyFile);
 
             method.Should()
-                  .Throw<FileNotFoundException>();
+                  .Throw<InvalidKeyException>();
         }
 
         [Fact]

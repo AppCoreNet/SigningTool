@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using dnlib.DotNet;
 using FluentAssertions;
@@ -7,9 +8,11 @@ namespace AppCore.SigningTool.StrongName
 {
     public class StrongNameKeyGeneratorTests
     {
-        [Fact]
+        [SkippableFact]
         public void GeneratesKeyWhichSnCanExport()
         {
+            Skip.IfNot(Environment.OSVersion.Platform == PlatformID.Win32NT);
+
             string keyFile = nameof(GeneratesKeyWhichSnCanExport) + ".snk";
             string publicKeyFile = nameof(GeneratesKeyWhichSnCanExport) + "_public.snk";
 
