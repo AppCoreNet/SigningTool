@@ -12,13 +12,15 @@ namespace AppCore.SigningTool
     {
         public const int Success = 0;
 
-        public const int FileAreadyExists = 1;
+        public const int UnrecognizedCommandOrArgument = 1;
 
         public const int FileNotFound = 2;
 
         public const int InvalidKey = 3;
 
         public const int InvalidAssembly = 4;
+
+        public const int FileAreadyExists = 5;
 
         public const int Unknown = -1;
 
