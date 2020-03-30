@@ -6,7 +6,7 @@
     <Copyright>Copyright (c) 2020 the AppCore .NET project</Copyright>
     <Version>1.0.0</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/AppCoreNet/SingingTool</RepositoryUrl>
+    <RepositoryUrl>https://github.com/AppCoreNet/SigningTool</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <LangVersion>latest</LangVersion>
     <NoWarn>$(NoWarn);NU5105</NoWarn>
