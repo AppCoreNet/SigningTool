@@ -1,26 +1,25 @@
-using System;
 using System.IO;
 using System.Security.Cryptography;
 using dnlib.DotNet;
 
-namespace AppCore.SigningTool.StrongNaming
+namespace AppCore.SigningTool.StrongName
 {
-    public class KeyGenerator
+    public class StrongNameKeyGenerator : IStrongNameKeyGenerator
     {
-        public StrongNameKey Generate(int? keySize)
+        public StrongNameKey Generate(int? keySize = null)
         {
             RSA rsa = keySize.HasValue
                 ? RSA.Create(keySize.Value)
                 : RSA.Create(1024);
 
-            var strongName = CreateStrongName(rsa.ExportParameters(true));
+            byte[] strongName = GetStrongNameBlob(rsa);
             return new StrongNameKey(strongName);
         }
 
-        public byte[] CreateStrongName(RSAParameters parameters)
+        private static byte[] GetStrongNameBlob(RSA rsa)
         {
             const uint RSA2_SIG = 0x32415352;
-
+            RSAParameters parameters = rsa.ExportParameters(true);
             var outStream = new MemoryStream();
             var writer = new BinaryWriter(outStream);
             writer.Write((byte)7);          // bType (public/private key)
@@ -39,25 +38,6 @@ namespace AppCore.SigningTool.StrongNaming
             writer.WriteReverse(parameters.InverseQ);
             writer.WriteReverse(parameters.D);
             return outStream.ToArray();
-        }
-    }
-
-    static class StrongNameUtils
-    {
-        public static byte[] ReadBytesReverse(this BinaryReader reader, int len)
-        {
-            var data = reader.ReadBytes(len);
-            if (data.Length != len)
-                throw new InvalidKeyException("Can't read more bytes");
-            Array.Reverse(data);
-            return data;
-        }
-
-        public static void WriteReverse(this BinaryWriter writer, byte[] data)
-        {
-            var d = (byte[])data.Clone();
-            Array.Reverse(d);
-            writer.Write(d);
         }
     }
 }

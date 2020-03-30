@@ -13,6 +13,15 @@ namespace AppCore.SigningTool.Commands
 
         void Configure(CommandLineApplication cmd);
 
-        int OnExecute(CommandLineApplication cmd);
+        int Execute(CommandLineApplication cmd);
+    }
+
+    /// <summary>
+    /// Represents a child command.
+    /// </summary>
+    /// <typeparam name="TParent">The parent command type.</typeparam>
+    public interface ICommand<TParent> : ICommand
+        where TParent : ICommand
+    {
     }
 }

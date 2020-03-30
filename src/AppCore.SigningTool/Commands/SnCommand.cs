@@ -1,5 +1,3 @@
-using AppCore.SigningTool.Commands.Sn;
-using AppCore.SigningTool.Extensions;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace AppCore.SigningTool.Commands
@@ -12,11 +10,9 @@ namespace AppCore.SigningTool.Commands
 
         public void Configure(CommandLineApplication cmd)
         {
-            cmd.Command<SnCreateKeyCommand>()
-               .Command<SnSignCommand>();
         }
 
-        public int OnExecute(CommandLineApplication cmd)
+        public int Execute(CommandLineApplication cmd)
         {
             cmd.ShowRootCommandFullNameAndVersion();
             cmd.ShowHelp();

@@ -1,13 +1,14 @@
 using System;
-using System.IO;
+using AppCore.SigningTool.StrongName;
 using dnlib.DotNet;
-using dnlib.DotNet.Writer;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace AppCore.SigningTool.Commands.Sn
 {
-    public class SnSignCommand : ICommand
+    public class SnSignCommand : ICommand<SnCommand>
     {
+        private readonly IStrongNameKeyLoader _keyLoader;
+        private readonly IStrongNameSigner _signer;
         private CommandArgument _keyFile;
         private CommandArgument _assemblyFile;
         private CommandOption<bool> _delaySign;
@@ -16,19 +17,25 @@ namespace AppCore.SigningTool.Commands.Sn
 
         public string Description => "Signs or re-signs an assembly with a strong name.";
 
+        public SnSignCommand(IStrongNameKeyLoader keyLoader, IStrongNameSigner signer)
+        {
+            _keyLoader = keyLoader;
+            _signer = signer;
+        }
+
         public void Configure(CommandLineApplication cmd)
         {
             _delaySign = cmd.Option<bool>("-d|--delay-sign", "Delay signs the assembly.",
                 CommandOptionType.NoValue);
 
             _keyFile = cmd.Argument("KEYFILE", "The path of the strong name key file.")
-                .IsRequired(false);
+                .IsRequired(false, "The 'KEYFILE' argument is required.");
 
             _assemblyFile = cmd.Argument("ASSEMBLY", "The path of the assembly file to sign.")
-                .IsRequired(false, "The 'assembly' argument is required.");
+                .IsRequired(false, "The 'ASSEMBLY' argument is required.");
         }
 
-        public int OnExecute(CommandLineApplication cmd)
+        public int Execute(CommandLineApplication cmd)
         {
             bool delaySign = _delaySign.HasValue();
             string keyFile = _keyFile.Value;
@@ -36,25 +43,16 @@ namespace AppCore.SigningTool.Commands.Sn
 
             try
             {
-                var module = ModuleDefMD.Load(File.ReadAllBytes(assemblyFile));
-                if (module.Assembly == null)
-                {
-                    throw new BadImageFormatException($"The file '{Path.GetFullPath(assemblyFile)}' is not a .NET assembly.");
-                }
-
-                var options = new ModuleWriterOptions(module);
                 if (delaySign)
                 {
-                    options.DelaySign = true;
-                    options.StrongNamePublicKey = LoadPublicKey(keyFile);
+                    StrongNamePublicKey publicKey = _keyLoader.LoadPublicKey(keyFile);
+                    _signer.DelaySignAssembly(assemblyFile, publicKey);
                 }
                 else
                 {
-                    var strongNameKey = new StrongNameKey(keyFile);
-                    options.InitializeStrongNameSigning(module, strongNameKey);
+                    StrongNameKey key = _keyLoader.LoadKey(keyFile);
+                    _signer.SignAssembly(assemblyFile, key);
                 }
-
-                module.Write("test.dll", options);
             }
             catch (Exception error)
             {
@@ -63,20 +61,6 @@ namespace AppCore.SigningTool.Commands.Sn
             }
 
             return ExitCodes.Success;
-        }
-
-        private StrongNamePublicKey LoadPublicKey(string keyFile)
-        {
-            try
-            {
-                var privateKey = new StrongNameKey(keyFile);
-                return new StrongNamePublicKey(privateKey.PublicKey);
-            }
-            catch (InvalidKeyException)
-            {
-                return new StrongNamePublicKey(keyFile);
-            }
-
         }
     }
 }
