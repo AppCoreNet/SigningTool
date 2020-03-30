@@ -16,7 +16,7 @@ namespace AppCore.SigningTool.StrongName
             return module;
         }
 
-        public void DelaySignAssembly(string assemblyPath, StrongNamePublicKey publicKey)
+        public void DelaySignAssembly(string assemblyPath, StrongNamePublicKey publicKey, string outAssemblyPath = null)
         {
             ModuleDefMD module = LoadAssembly(assemblyPath);
             var options = new ModuleWriterOptions(module)
@@ -25,15 +25,15 @@ namespace AppCore.SigningTool.StrongName
                 StrongNamePublicKey = publicKey
             };
 
-            module.Write(assemblyPath, options);
+            module.Write(outAssemblyPath ?? assemblyPath, options);
         }
 
-        public void SignAssembly(string assemblyPath, StrongNameKey key)
+        public void SignAssembly(string assemblyPath, StrongNameKey key, string outAssemblyPath = null)
         {
             ModuleDefMD module = LoadAssembly(assemblyPath);
             var options = new ModuleWriterOptions(module);
             options.InitializeStrongNameSigning(module, key);
-            module.Write(assemblyPath, options);
+            module.Write(outAssemblyPath ?? assemblyPath, options);
         }
     }
 }
