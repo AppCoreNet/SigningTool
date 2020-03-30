@@ -8,12 +8,12 @@ namespace AppCore.SigningTool.StrongName
 {
     public class StrongNameKeyLoaderTests
     {
-        private static string DataDir = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..");
+        private static string KeyDir = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..");
 
         [Fact]
         public void CanLoadKeyGeneratedBySn()
         {
-            string keyFile = Path.Combine(DataDir, "test.snk");
+            string keyFile = Path.Combine(KeyDir, "test.snk");
 
             var loader = new StrongNameKeyLoader();
             StrongNameKey key = loader.LoadKey(keyFile);
@@ -25,7 +25,7 @@ namespace AppCore.SigningTool.StrongName
         [Fact]
         public void CanLoadPublicKeyGeneratedBySn()
         {
-            string keyFile = Path.Combine(DataDir, "test_public_sha1.snk");
+            string keyFile = Path.Combine(KeyDir, "test_public_sha1.snk");
 
             var loader = new StrongNameKeyLoader();
             StrongNamePublicKey key = loader.LoadPublicKey(keyFile);
@@ -40,7 +40,7 @@ namespace AppCore.SigningTool.StrongName
         [Fact]
         public void CanLoadPublicKeyFromKey()
         {
-            string keyFile = Path.Combine(DataDir, "test.snk");
+            string keyFile = Path.Combine(KeyDir, "test.snk");
 
             var loader = new StrongNameKeyLoader();
             loader.LoadPublicKey(keyFile);
@@ -49,7 +49,7 @@ namespace AppCore.SigningTool.StrongName
         [Fact]
         public void LoadKeyThrowsFileNotFoundException()
         {
-            string keyFile = Path.Combine(DataDir, "unknown.snk");
+            string keyFile = Path.Combine(KeyDir, "unknown.snk");
 
             var loader = new StrongNameKeyLoader();
             Action method = () => loader.LoadKey(keyFile);
@@ -61,7 +61,7 @@ namespace AppCore.SigningTool.StrongName
         [Fact]
         public void LoadKeyThrowsInvalidKeyExceptionForPublicKey()
         {
-            string keyFile = Path.Combine(DataDir, "test_public_sha1.snk");
+            string keyFile = Path.Combine(KeyDir, "test_public_sha1.snk");
 
             var loader = new StrongNameKeyLoader();
             Action method = () => loader.LoadKey(keyFile);
@@ -73,7 +73,7 @@ namespace AppCore.SigningTool.StrongName
         [Fact]
         public void LoadPublicKeyThrowsFileNotFoundException()
         {
-            string keyFile = Path.Combine(DataDir, "unknown.snk");
+            string keyFile = Path.Combine(KeyDir, "unknown.snk");
 
             var loader = new StrongNameKeyLoader();
             Action method = () => loader.LoadPublicKey(keyFile);
