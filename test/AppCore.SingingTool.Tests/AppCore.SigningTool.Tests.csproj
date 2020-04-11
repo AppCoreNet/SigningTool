@@ -11,6 +11,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\AppCore.SigningTool\AppCore.SigningTool.csproj" />
+    <ProjectReference Include="..\DelaySignedAssembly\DelaySignedAssembly.csproj" />
+    <ProjectReference Include="..\SignedAssembly\SignedAssembly.csproj" />
+    <ProjectReference Include="..\UnsignedAssembly\UnsignedAssembly.csproj" />
   </ItemGroup>
 
 </Project>

@@ -25,7 +25,9 @@ namespace AppCore.SigningTool.Commands.Sn
 
         public void Configure(CommandLineApplication cmd)
         {
-            _force = cmd.Option<bool>("-f|--force", "Forces overwrite of an existing key file.",
+            _force = cmd.Option<bool>(
+                "-f|--force",
+                "Forces overwrite of an existing key file.",
                 CommandOptionType.NoValue);
 
             _keySize = cmd.Option<int>(

@@ -19,6 +19,7 @@ namespace AppCore.SigningTool
                 Name = "dotnet-signtool"
             };
 
+            app.MakeSuggestionsInErrorMessage = true;
             app.VersionOptionFromAssemblyAttributes(typeof(Program).Assembly);
             app.HelpOption("-h|--help", true);
             app.OnExecute(
@@ -30,7 +31,21 @@ namespace AppCore.SigningTool
 
             app.RegisterCommands(serviceProvider);
 
-            return app.Execute(args);
+            try
+            {
+                return app.Execute(args);
+            }
+            catch (UnrecognizedCommandParsingException error)
+            {
+                app.Error.WriteLine(error.Message + ".");
+                app.Out.WriteLine("Did you mean '{0}' ?", string.Join(' ', error.NearestMatches));
+            }
+            catch (CommandParsingException error)
+            {
+                app.Error.WriteLine(error.Message);
+            }
+
+            return ExitCodes.UnrecognizedCommandOrArgument;
         }
 
         private static ServiceProvider CreateServiceProvider()
@@ -49,6 +64,7 @@ namespace AppCore.SigningTool
             services.AddSingleton<ICommand, SnCommand>();
             services.AddSingleton<ICommand<SnCommand>, SnCreateKeyCommand>();
             services.AddSingleton<ICommand<SnCommand>, SnExportPublicKeyCommand>();
+            services.AddSingleton<ICommand<SnCommand>, SnShowKeyCommand>();
             services.AddSingleton<ICommand<SnCommand>, SnSignCommand>();
         }
     }

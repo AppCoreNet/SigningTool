@@ -9,7 +9,7 @@ namespace AppCore.SigningTool.StrongName
             try
             {
                 var privateKey = new StrongNameKey(path);
-                return new StrongNamePublicKey(privateKey.PublicKey);
+                return privateKey.GetPublicKey();
             }
             catch (InvalidKeyException)
             {
