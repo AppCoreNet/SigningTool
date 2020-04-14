@@ -20,7 +20,7 @@ namespace AppCore.SigningTool
 
         public const int InvalidAssembly = 4;
 
-        public const int FileAreadyExists = 5;
+        public const int FileAlreadyExists = 5;
 
         public const int Unknown = -1;
 
@@ -28,8 +28,8 @@ namespace AppCore.SigningTool
         {
             switch (error)
             {
-                case FileAreadyExistsException _:
-                    return FileAreadyExists;
+                case FileAlreadyExistsException _:
+                    return FileAlreadyExists;
 
                 case FileNotFoundException _:
                     return FileNotFound;

@@ -88,7 +88,7 @@ namespace AppCore.SigningTool.Commands.Sn
             try
             {
                 if (File.Exists(publicKeyFile) && !force)
-                    throw new FileAreadyExistsException(publicKeyFile);
+                    throw new FileAlreadyExistsException(publicKeyFile);
 
                 StrongNameKey key = _keyLoader.LoadKey(keyFile);
 
