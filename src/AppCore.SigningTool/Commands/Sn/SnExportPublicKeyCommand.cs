@@ -72,6 +72,9 @@ namespace AppCore.SigningTool.Commands.Sn
                     case "sha512":
                         result = AssemblyHashAlgorithm.SHA_512;
                         break;
+                    default:
+                        result = AssemblyHashAlgorithm.None;
+                        break;
                 }
             }
 
