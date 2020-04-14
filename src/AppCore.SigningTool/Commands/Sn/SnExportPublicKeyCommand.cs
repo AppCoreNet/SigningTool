@@ -54,21 +54,25 @@ namespace AppCore.SigningTool.Commands.Sn
 
         private AssemblyHashAlgorithm ParseAssemblyHashAlgorithm(string value)
         {
-            var result = AssemblyHashAlgorithm.None;
-            switch (value.ToLowerInvariant())
+            var result = AssemblyHashAlgorithm.SHA1;
+
+            if (!string.IsNullOrEmpty(value))
             {
-                case "sha1":
-                    result = AssemblyHashAlgorithm.SHA1;
-                    break;
-                case "sha256":
-                    result = AssemblyHashAlgorithm.SHA_256;
-                    break;
-                case "sha384":
-                    result = AssemblyHashAlgorithm.SHA_384;
-                    break;
-                case "sha512":
-                    result = AssemblyHashAlgorithm.SHA_512;
-                    break;
+                switch (value.ToLowerInvariant())
+                {
+                    case "sha1":
+                        result = AssemblyHashAlgorithm.SHA1;
+                        break;
+                    case "sha256":
+                        result = AssemblyHashAlgorithm.SHA_256;
+                        break;
+                    case "sha384":
+                        result = AssemblyHashAlgorithm.SHA_384;
+                        break;
+                    case "sha512":
+                        result = AssemblyHashAlgorithm.SHA_512;
+                        break;
+                }
             }
 
             return result;
@@ -78,9 +82,7 @@ namespace AppCore.SigningTool.Commands.Sn
         {
             bool force = _force.HasValue();
 
-            AssemblyHashAlgorithm hashAlgorithm = _hashAlgorithm.HasValue()
-                ? ParseAssemblyHashAlgorithm(_hashAlgorithm.ParsedValue)
-                : AssemblyHashAlgorithm.SHA1;
+            AssemblyHashAlgorithm hashAlgorithm = ParseAssemblyHashAlgorithm(_hashAlgorithm.ParsedValue);
 
             string keyFile = _keyFile.Value;
             string publicKeyFile = _publicKeyFile.Value;
