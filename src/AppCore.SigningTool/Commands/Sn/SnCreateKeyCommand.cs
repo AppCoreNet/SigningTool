@@ -48,7 +48,7 @@ namespace AppCore.SigningTool.Commands.Sn
             try
             {
                 if (File.Exists(keyFile) && !force)
-                    throw new FileAreadyExistsException(keyFile);
+                    throw new FileAlreadyExistsException(keyFile);
 
                 StrongNameKey key = _keyGenerator.Generate(keySize);
                 File.WriteAllBytes(keyFile, key.CreateStrongName());
