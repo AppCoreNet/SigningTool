@@ -2,9 +2,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using AppCore.SigningTool.Keys;
 
-namespace AppCore.SigningTool.StrongName
+namespace AppCore.SigningTool.Keys
 {
     internal class SChannelKeyBlobFormatter
     {
@@ -12,12 +11,22 @@ namespace AppCore.SigningTool.StrongName
         const uint RSA2_SIG = 0x32415352;
         const uint RSA1_SIG = 0x31415352;
 
-        public static void Serialize(BinaryWriter writer, RsaKeyPair keyPair)
+        public static void Serialize(Stream stream, RsaKeyPair keyPair)
         {
             RsaPrivateKey privateKey = keyPair.PrivateKey;
             if (privateKey != null)
+            {
+                using var writer = new BinaryWriter(stream, Encoding.UTF8, true);
                 SerializePrivateKey(writer, privateKey);
+            }
+            else
+            {
+                Serialize(stream, keyPair.PublicKey);
+            }
+        }
 
+        public static void Serialize(Stream stream, RsaPublicKey publicKey)
+        {
         }
 
         private static void SerializePrivateKey(BinaryWriter writer, RsaPrivateKey privateKey)

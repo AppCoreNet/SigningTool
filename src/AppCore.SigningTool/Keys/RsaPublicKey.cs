@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace AppCore.SigningTool.StrongName
+namespace AppCore.SigningTool.Keys
 {
     public class RsaPublicKey : IPublicKey
     {

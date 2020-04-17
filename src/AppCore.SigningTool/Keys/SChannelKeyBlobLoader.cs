@@ -1,7 +1,6 @@
-using System;
 using System.IO;
 
-namespace AppCore.SigningTool.StrongName
+namespace AppCore.SigningTool.Keys
 {
     public class SChannelKeyBlobLoader : IKeyPairLoader
     {

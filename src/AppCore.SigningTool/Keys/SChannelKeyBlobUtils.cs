@@ -1,8 +1,7 @@
 using System;
 using System.IO;
-using AppCore.SigningTool.Keys;
 
-namespace AppCore.SigningTool.StrongName
+namespace AppCore.SigningTool.Keys
 {
     internal static class SChannelKeyBlobUtils
     {

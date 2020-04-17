@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace AppCore.SigningTool.StrongName
+namespace AppCore.SigningTool.Keys
 {
     public class RsaKeyGenerator : IKeyGenerator
     {
