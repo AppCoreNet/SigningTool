@@ -1,16 +1,16 @@
 using System;
 using System.IO;
-using dnlib.DotNet;
+using AppCore.SigningTool.Keys;
 
 namespace AppCore.SigningTool.StrongName
 {
-    internal static class StrongNameBlobUtils
+    internal static class SChannelKeyBlobUtils
     {
         public static byte[] ReadBytesReverse(this BinaryReader reader, int len)
         {
             byte[] data = reader.ReadBytes(len);
             if (data.Length != len)
-                throw new InvalidKeyException("Can't read more bytes");
+                throw new InvalidKeyException("Couldn't read key blob.");
 
             Array.Reverse(data);
             return data;
