@@ -40,5 +40,15 @@ namespace AppCore.SigningTool.Keys
             PrivateKey = privateKey;
             PublicKey = publicKey;
         }
+
+        public RsaKeyPair WithHashAlgorithm(AssemblyHashAlgorithm hashAlgorithm)
+        {
+            return new RsaKeyPair(PrivateKey, PublicKey.WithHashAlgorithm(hashAlgorithm));
+        }
+
+        IKeyPair IKeyPair.WithHashAlgorithm(AssemblyHashAlgorithm hashAlgorithm)
+        {
+            return WithHashAlgorithm(hashAlgorithm);
+        }
     }
 }

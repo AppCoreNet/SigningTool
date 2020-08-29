@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AppCore.SigningTool": {
+      "commandName": "Project",
+      "commandLineArgs": "sx"
+    }
+  }
+}

@@ -1,15 +1,15 @@
 using System;
 using System.IO;
 using AppCore.SigningTool.Exceptions;
+using AppCore.SigningTool.Keys;
 using AppCore.SigningTool.StrongName;
-using dnlib.DotNet;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace AppCore.SigningTool.Commands.Sn
 {
     public class SnSignCommand : ICommand<SnCommand>
     {
-        private readonly IStrongNameKeyLoader _keyLoader;
+        private readonly IKeyStore _keyLoader;
         private readonly IStrongNameSigner _signer;
         private CommandOption<bool> _delaySign;
         private CommandOption<bool> _force;
@@ -21,7 +21,7 @@ namespace AppCore.SigningTool.Commands.Sn
 
         public string Description => "Signs or re-signs an assembly with a strong name.";
 
-        public SnSignCommand(IStrongNameKeyLoader keyLoader, IStrongNameSigner signer)
+        public SnSignCommand(IKeyStore keyLoader, IStrongNameSigner signer)
         {
             _keyLoader = keyLoader;
             _signer = signer;
@@ -61,15 +61,14 @@ namespace AppCore.SigningTool.Commands.Sn
                 if (File.Exists(outAssemblyFile) && !force)
                     throw new FileAreadyExistsException(outAssemblyFile);
 
+                IKeyPair keyPair = _keyLoader.Load(keyFile);
                 if (delaySign)
                 {
-                    StrongNamePublicKey publicKey = _keyLoader.LoadPublicKey(keyFile);
-                    _signer.DelaySignAssembly(assemblyFile, publicKey, outAssemblyFile);
+                    _signer.DelaySignAssembly(assemblyFile, keyPair.PublicKey, outAssemblyFile);
                 }
                 else
                 {
-                    StrongNameKey key = _keyLoader.LoadKey(keyFile);
-                    _signer.SignAssembly(assemblyFile, key, outAssemblyFile);
+                    _signer.SignAssembly(assemblyFile, keyPair.PrivateKey, outAssemblyFile);
                 }
             }
             catch (Exception error)

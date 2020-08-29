@@ -17,9 +17,14 @@ namespace AppCore.SigningTool.Keys
             HashAlgorithm = hashAlgorithm;
         }
 
-        public IPublicKey WithHashAlgorithm(AssemblyHashAlgorithm hashAlgorithm)
+        public RsaPublicKey WithHashAlgorithm(AssemblyHashAlgorithm hashAlgorithm)
         {
             return new RsaPublicKey(Modulus, PublicExponent, hashAlgorithm);
+        }
+
+        IPublicKey IPublicKey.WithHashAlgorithm(AssemblyHashAlgorithm hashAlgorithm)
+        {
+            return WithHashAlgorithm(hashAlgorithm);
         }
     }
 }

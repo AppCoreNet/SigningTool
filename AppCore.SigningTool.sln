@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppCore.SigningTool", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppCore.SigningTool.Tests", "test\AppCore.SingingTool.Tests\AppCore.SigningTool.Tests.csproj", "{DE62F6BD-5942-4862-83DF-79C1EE50A940}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignedAssembly", "test\SignedAssembly\SignedAssembly.csproj", "{DEA19E22-7E9B-4BDC-B99D-47FC34DF5D9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignedAssembly", "test\SignedAssembly\SignedAssembly.csproj", "{DEA19E22-7E9B-4BDC-B99D-47FC34DF5D9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelaySignedAssembly", "test\DelaySignedAssembly\DelaySignedAssembly.csproj", "{E8BCB2FA-EBF1-476B-BB6F-40E226C418B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DelaySignedAssembly", "test\DelaySignedAssembly\DelaySignedAssembly.csproj", "{E8BCB2FA-EBF1-476B-BB6F-40E226C418B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnsignedAssembly", "test\UnsignedAssembly\UnsignedAssembly.csproj", "{198A5852-EFF8-421E-8BC8-230810746123}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnsignedAssembly", "test\UnsignedAssembly\UnsignedAssembly.csproj", "{198A5852-EFF8-421E-8BC8-230810746123}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

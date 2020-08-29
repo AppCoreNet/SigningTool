@@ -1,6 +1,7 @@
 using AppCore.SigningTool.Commands;
 using AppCore.SigningTool.Commands.Sn;
 using AppCore.SigningTool.Extensions;
+using AppCore.SigningTool.Keys;
 using AppCore.SigningTool.StrongName;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,8 +58,14 @@ namespace AppCore.SigningTool
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IStrongNameKeyGenerator, StrongNameKeyGenerator>();
-            services.AddSingleton<IStrongNameKeyLoader, StrongNameKeyLoader>();
+            // key generation
+            services.AddSingleton<IKeyGeneratorFactory, KeyGeneratorFactory>();
+            services.AddSingleton<IKeyGenerator, RsaKeyGenerator>();
+
+            // key stores
+            services.AddSingleton<IKeyStore, SChannelKeyBlobStore>();
+            services.AddSingleton<IKeyStoreFactory, KeyStoreFactory>();
+
             services.AddSingleton<IStrongNameSigner, StrongNameSigner>();
 
             services.AddSingleton<ICommand, SnCommand>();

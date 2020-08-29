@@ -1,16 +1,17 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Reflection;
 using AppCore.SigningTool.Exceptions;
+using AppCore.SigningTool.Keys;
 using AppCore.SigningTool.StrongName;
-using dnlib.DotNet;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace AppCore.SigningTool.Commands.Sn
 {
     public class SnExportPublicKeyCommand : ICommand<SnCommand>
     {
-        private readonly IStrongNameKeyLoader _keyLoader;
+        private readonly IKeyStore _keyStore;
         private CommandOption<bool> _force;
         private CommandOption<string> _hashAlgorithm;
         private CommandArgument _keyFile;
@@ -20,9 +21,9 @@ namespace AppCore.SigningTool.Commands.Sn
 
         public string Description => "Exports the public key from a strong name key pair.";
 
-        public SnExportPublicKeyCommand(IStrongNameKeyLoader keyLoader)
+        public SnExportPublicKeyCommand(IKeyStore keyStore)
         {
-            _keyLoader = keyLoader;
+            _keyStore = keyStore;
         }
 
         public void Configure(CommandLineApplication cmd)
@@ -40,7 +41,7 @@ namespace AppCore.SigningTool.Commands.Sn
                     vc =>
                     {
                         if (ParseAssemblyHashAlgorithm(_hashAlgorithm.ParsedValue) == AssemblyHashAlgorithm.None)
-                            return new ValidationResult($"Unknown hash algorithm '{_hashAlgorithm.ParsedValue}'.");
+                            return new ValidationResult($"Unknown or unsupported hash algorithm '{_hashAlgorithm.ParsedValue}'.");
 
                         return ValidationResult.Success;
                     });
@@ -54,20 +55,11 @@ namespace AppCore.SigningTool.Commands.Sn
 
         private AssemblyHashAlgorithm ParseAssemblyHashAlgorithm(string value)
         {
-            var result = AssemblyHashAlgorithm.None;
-            switch (value.ToLowerInvariant())
+            Enum.TryParse(value, out AssemblyHashAlgorithm result);
+            switch (result)
             {
-                case "sha1":
-                    result = AssemblyHashAlgorithm.SHA1;
-                    break;
-                case "sha256":
-                    result = AssemblyHashAlgorithm.SHA_256;
-                    break;
-                case "sha384":
-                    result = AssemblyHashAlgorithm.SHA_384;
-                    break;
-                case "sha512":
-                    result = AssemblyHashAlgorithm.SHA_512;
+                case AssemblyHashAlgorithm.MD5:
+                    result = AssemblyHashAlgorithm.None;
                     break;
             }
 
@@ -80,7 +72,7 @@ namespace AppCore.SigningTool.Commands.Sn
 
             AssemblyHashAlgorithm hashAlgorithm = _hashAlgorithm.HasValue()
                 ? ParseAssemblyHashAlgorithm(_hashAlgorithm.ParsedValue)
-                : AssemblyHashAlgorithm.SHA1;
+                : AssemblyHashAlgorithm.Sha1;
 
             string keyFile = _keyFile.Value;
             string publicKeyFile = _publicKeyFile.Value;
@@ -90,12 +82,10 @@ namespace AppCore.SigningTool.Commands.Sn
                 if (File.Exists(publicKeyFile) && !force)
                     throw new FileAreadyExistsException(publicKeyFile);
 
-                StrongNameKey key = _keyLoader.LoadKey(keyFile);
+                IKeyPair keyPair = _keyStore.Load(keyFile);
+                keyPair = keyPair.WithHashAlgorithm(hashAlgorithm);
 
-                byte[] publicKey = key.WithHashAlgorithm(hashAlgorithm)
-                                      .PublicKey;
-
-                File.WriteAllBytes(publicKeyFile, publicKey);
+                new SChannelKeyBlobStore().Save(publicKeyFile, keyPair);
             }
             catch (Exception error)
             {

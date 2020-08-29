@@ -4,6 +4,8 @@ namespace AppCore.SigningTool.Keys
 {
     public class RsaKeyGenerator : IKeyGenerator
     {
+        public string AlgorithmName => "RSA";
+
         public IKeyPair Generate(int? keySize = null)
         {
             using RSA rsa = keySize.HasValue

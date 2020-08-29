@@ -11,13 +11,16 @@ namespace AppCore.SigningTool.Keys
         const uint RSA2_SIG = 0x32415352;
         const uint RSA1_SIG = 0x31415352;
 
-        public static void Serialize(Stream stream, RsaKeyPair keyPair)
+        public static void Serialize(Stream stream, RsaKeyPair keyPair, bool includePrivateKey = false)
         {
-            RsaPrivateKey privateKey = keyPair.PrivateKey;
-            if (privateKey != null)
+            if (includePrivateKey)
             {
-                using var writer = new BinaryWriter(stream, Encoding.UTF8, true);
-                SerializePrivateKey(writer, privateKey);
+                RsaPrivateKey privateKey = keyPair.PrivateKey;
+                if (privateKey == null)
+                    throw new InvalidOperationException("No private key in key pair.");
+
+                Serialize(stream, privateKey);
+
             }
             else
             {
@@ -27,10 +30,24 @@ namespace AppCore.SigningTool.Keys
 
         public static void Serialize(Stream stream, RsaPublicKey publicKey)
         {
+            using var writer = new BinaryWriter(stream, Encoding.UTF8, true);
+            writer.Write((uint)CALG_RSA_SIGN);     // SigAlgID
+            writer.Write((uint)publicKey.HashAlgorithm);    // HashAlgID
+            writer.Write(0x14 + publicKey.Modulus.Length);// cbPublicKey
+            writer.Write((byte)6);          // bType (public key)
+            writer.Write((byte)2);          // bVersion
+            writer.Write((ushort)0);        // reserved
+            writer.Write((uint)CALG_RSA_SIGN);     // aiKeyAlg
+            writer.Write(RSA1_SIG);         // magic (RSA1)
+            writer.Write(publicKey.Modulus.Length * 8);   // bitlen
+            writer.WriteReverse(publicKey.PublicExponent);// pubexp
+            writer.Write(new byte[4 - publicKey.PublicExponent.Length]); // pad to DWORD
+            writer.WriteReverse(publicKey.Modulus);	// modulus
         }
 
-        private static void SerializePrivateKey(BinaryWriter writer, RsaPrivateKey privateKey)
+        public static void Serialize(Stream stream, RsaPrivateKey privateKey)
         {
+            using var writer = new BinaryWriter(stream, Encoding.UTF8, true);
             writer.Write((byte)7);          // bType (public/private key)
             writer.Write((byte)2);          // bVersion
             writer.Write((ushort)0);        // reserved
@@ -53,12 +70,14 @@ namespace AppCore.SigningTool.Keys
             RsaKeyPair keyPair;
             try
             {
-                keyPair = DeserializeKeyPair(new BinaryReader(stream, Encoding.UTF8, true));
+                using var reader = new BinaryReader(stream, Encoding.UTF8, true);
+                keyPair = DeserializeKeyPair(reader);
             }
             catch (InvalidKeyException)
             {
                 stream.Seek(0, SeekOrigin.Begin);
-                keyPair = new RsaKeyPair(null, DeserializePublicKey(new BinaryReader(stream, Encoding.UTF8, true)));
+                using var reader = new BinaryReader(stream, Encoding.UTF8, true);
+                keyPair = new RsaKeyPair(null, DeserializePublicKey(reader));
             }
 
             return keyPair;

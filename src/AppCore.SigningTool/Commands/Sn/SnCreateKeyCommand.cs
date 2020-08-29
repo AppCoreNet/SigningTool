@@ -1,15 +1,14 @@
 using System;
 using System.IO;
 using AppCore.SigningTool.Exceptions;
-using AppCore.SigningTool.StrongName;
-using dnlib.DotNet;
+using AppCore.SigningTool.Keys;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace AppCore.SigningTool.Commands.Sn
 {
     public class SnCreateKeyCommand : ICommand<SnCommand>
     {
-        private readonly IStrongNameKeyGenerator _keyGenerator;
+        private readonly IKeyGenerator _keyGenerator;
         private CommandOption<bool> _force;
         private CommandOption<int> _keySize;
         private CommandArgument _keyFile;
@@ -18,9 +17,9 @@ namespace AppCore.SigningTool.Commands.Sn
 
         public string Description => "Creates a new strong name key pair.";
 
-        public SnCreateKeyCommand(IStrongNameKeyGenerator keyGenerator)
+        public SnCreateKeyCommand(IKeyGeneratorFactory keyGeneratorFactory)
         {
-            _keyGenerator = keyGenerator;
+            _keyGenerator = keyGeneratorFactory.Create("rsa");
         }
 
         public void Configure(CommandLineApplication cmd)
@@ -50,8 +49,8 @@ namespace AppCore.SigningTool.Commands.Sn
                 if (File.Exists(keyFile) && !force)
                     throw new FileAreadyExistsException(keyFile);
 
-                StrongNameKey key = _keyGenerator.Generate(keySize);
-                File.WriteAllBytes(keyFile, key.CreateStrongName());
+                IKeyPair key = _keyGenerator.Generate(keySize);
+                new SChannelKeyBlobStore().Save(keyFile, key, true);
             }
             catch (Exception error)
             {

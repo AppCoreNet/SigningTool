@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using AppCore.SigningTool.Keys;
 using dnlib.DotNet;
 using dnlib.DotNet.Writer;
 
@@ -16,23 +17,37 @@ namespace AppCore.SigningTool.StrongName
             return module;
         }
 
-        public void DelaySignAssembly(string assemblyPath, StrongNamePublicKey publicKey, string outAssemblyPath = null)
+        public void DelaySignAssembly(string assemblyPath, IPublicKey publicKey, string outAssemblyPath = null)
         {
+            var rsaPublicKey = publicKey as RsaPublicKey;
+
+            var strongNamePublicKey = new StrongNamePublicKey(
+                rsaPublicKey.Modulus,
+                rsaPublicKey.PublicExponent,
+                (AssemblyHashAlgorithm)rsaPublicKey.HashAlgorithm);
+
             ModuleDefMD module = LoadAssembly(assemblyPath);
+
             var options = new ModuleWriterOptions(module)
             {
                 DelaySign = true,
-                StrongNamePublicKey = publicKey
+                StrongNamePublicKey = strongNamePublicKey
             };
 
             module.Write(outAssemblyPath ?? assemblyPath, options);
         }
 
-        public void SignAssembly(string assemblyPath, StrongNameKey key, string outAssemblyPath = null)
+        public void SignAssembly(string assemblyPath, IPrivateKey key, string outAssemblyPath = null)
         {
+            var rsaPrivateKey = key as RsaPrivateKey;
+
+            var keyBlobStream = new MemoryStream();
+            SChannelKeyBlobFormatter.Serialize(keyBlobStream, rsaPrivateKey);
+            var strongNameKey = new StrongNameKey(keyBlobStream.ToArray());
+
             ModuleDefMD module = LoadAssembly(assemblyPath);
             var options = new ModuleWriterOptions(module);
-            options.InitializeStrongNameSigning(module, key);
+            options.InitializeStrongNameSigning(module, strongNameKey);
             module.Write(outAssemblyPath ?? assemblyPath, options);
         }
     }

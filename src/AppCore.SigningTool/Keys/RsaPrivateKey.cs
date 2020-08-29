@@ -2,6 +2,9 @@ namespace AppCore.SigningTool.Keys
 {
     public class RsaPrivateKey: IPrivateKey
     {
+        /// <inheritdoc />
+        public int SignatureSize => Modulus.Length;
+
         public byte[] PublicExponent { get; }
 
         public byte[] Modulus { get; }
