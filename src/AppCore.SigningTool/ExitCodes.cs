@@ -14,13 +14,15 @@ namespace AppCore.SigningTool
 
         public const int UnrecognizedCommandOrArgument = 1;
 
-        public const int FileNotFound = 2;
+        public const int DirectoryNotFound = 2;
 
-        public const int InvalidKey = 3;
+        public const int FileNotFound = 3;
 
-        public const int InvalidAssembly = 4;
+        public const int FileAlreadyExists = 4;
 
-        public const int FileAreadyExists = 5;
+        public const int InvalidKey = 5;
+
+        public const int InvalidAssembly = 6;
 
         public const int Unknown = -1;
 
@@ -28,8 +30,11 @@ namespace AppCore.SigningTool
         {
             switch (error)
             {
-                case FileAreadyExistsException _:
-                    return FileAreadyExists;
+                case FileAlreadyExistsException _:
+                    return FileAlreadyExists;
+
+                case DirectoryNotFoundException _:
+                    return DirectoryNotFound;
 
                 case FileNotFoundException _:
                     return FileNotFound;

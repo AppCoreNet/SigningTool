@@ -2,9 +2,9 @@ using System.IO;
 
 namespace AppCore.SigningTool.Exceptions
 {
-    public class FileAreadyExistsException : IOException
+    public class FileAlreadyExistsException : IOException
     {
-        public FileAreadyExistsException(string fileName)
+        public FileAlreadyExistsException(string fileName)
             : base($"File {Path.GetFullPath(fileName)} already exists.")
         {
         }

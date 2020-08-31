@@ -59,7 +59,7 @@ namespace AppCore.SigningTool.Commands.Sn
             try
             {
                 if (File.Exists(outAssemblyFile) && !force)
-                    throw new FileAreadyExistsException(outAssemblyFile);
+                    throw new FileAlreadyExistsException(outAssemblyFile);
 
                 if (delaySign)
                 {
