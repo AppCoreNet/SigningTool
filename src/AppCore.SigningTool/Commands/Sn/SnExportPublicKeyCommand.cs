@@ -39,8 +39,11 @@ namespace AppCore.SigningTool.Commands.Sn
                 .OnValidate(
                     vc =>
                     {
-                        if (ParseAssemblyHashAlgorithm(_hashAlgorithm.ParsedValue) == AssemblyHashAlgorithm.None)
+                        if (_hashAlgorithm.HasValue()
+                            && ParseAssemblyHashAlgorithm(_hashAlgorithm.ParsedValue) == AssemblyHashAlgorithm.None)
+                        {
                             return new ValidationResult($"Unknown hash algorithm '{_hashAlgorithm.ParsedValue}'.");
+                        }
 
                         return ValidationResult.Success;
                     });
